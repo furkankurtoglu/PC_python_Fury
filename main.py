@@ -15,7 +15,7 @@ import glob
 import time
 
 #reading data
-output = 'final.xml'
+output = 'initial.xml'
 
 #function to create sphere actors, this function works for only CRC organoid project
 mcds=pyMCDS(output)
@@ -66,8 +66,7 @@ radii = np.concatenate((C_radii,N_radii),axis=0)
 # Creating Sphere Actor for one time-point
 sphere_actor = actor.sphere(centers=xyz,colors=colors,radii=radii)
 
-#create
-sphere_actor = create_sphere_actor(output)
+#%%
 
 #Creating Scene and showmanager
 scene = window.Scene()
@@ -81,8 +80,11 @@ showm = window.ShowManager(scene,
 #Adding Sphere actor to scene
 scene.add(sphere_actor)
 
+#xdomain_size=
+
+
 #Drawing Domain Boundaries
-lines = [np.array([[-500.,-800.,-500.],[500.,-800.,-500.],[500.,800.,-500.],[-500.,800.,-500.],[-500.,-800.,-500.],[-500.,-800.,500.],[-500.,800.,500.],[-500.,800.,-500.],[-500.,800.,500.],[500.,800.,500.],[500.,800.,-500.],[500.,800.,-500.],[500.,-800.,-500.],[500.,-800.,500.],[500.,800.,500.],[500.,-800.,500.],[-500.,-800.,500.]])]
+lines = [np.array([[-2880.,-500.,-2880.],[2880.,-500.,-2880.],[2880.,500.,-2880.],[-2880.,500.,-2880.],[-2880.,-500.,-2880.],[-2880.,-500.,2880.],[-2880.,500.,2880.],[-2880.,500.,-2880.],[-2880.,500.,2880.],[2880.,500.,2880.],[2880.,500.,-2880.],[2880.,500.,-2880.],[2880.,-500.,-2880.],[2880.,-500.,2880.],[2880.,500.,2880.],[2880.,-500.,2880.],[-2880.,-500.,2880.]])]
 colors = np.random.rand(1,3)
 c = actor.line(lines, colors)
 scene.add(c)
