@@ -90,7 +90,7 @@ c = actor.line(lines, colors)
 scene.add(c)
 
 #Adding Dimension Labels
-x_label = actor.text_3d(text='x axis (micron)',position=(-2500,-500,-3000),font_size=50,justification='left')
+x_label = actor.text_3d(text='x axis (micron)',position=(-2500.0,-500.0,-3000.0),font_size=50,justification='left')
 scene.add(x_label)
 y_label = actor.text_3d(text='y axis (micron)',position=(-2666,0,-2666),font_size=50,justification='left')
 scene.add(y_label)
