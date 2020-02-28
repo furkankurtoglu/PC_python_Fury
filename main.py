@@ -15,7 +15,7 @@ import glob
 import time
 
 #reading data
-output = 'initial.xml'
+output = "output00000001.xml"
 
 #function to create sphere actors, this function works for only CRC organoid project
 mcds=pyMCDS(output)
@@ -70,11 +70,11 @@ sphere_actor = actor.sphere(centers=xyz,colors=colors,radii=radii)
 
 #Creating Scene and showmanager
 scene = window.Scene()
-scene.set_camera(position=(71.47, 19.45, 3469.03), focal_point=(6.70, -22.29, -18.06),
-                 view_up=(0.00, 1.00, -0.01))
+scene.set_camera(position=(5026.62, 2766.0, 9293.52), focal_point=(221.95, -75.04, -77.73),
+                 view_up=(-0.06, 0.963, -0.26))
 
 showm = window.ShowManager(scene,
-                           size=(1080, 720), reset_camera=True,
+                           size=(1280, 720), reset_camera=True,
                            order_transparent=True)
 
 #Adding Sphere actor to scene
@@ -90,15 +90,18 @@ c = actor.line(lines, colors)
 scene.add(c)
 
 #Adding Dimension Labels
-x_label = actor.text_3d(text='x axis (micron)',position=(-2500.0,-500.0,-3000.0),font_size=50,justification='left')
+x_label = actor.text_3d(text='x axis (micron)',position=(-750.0,-700.0,3000.0),font_size=200,justification='left')
 scene.add(x_label)
-y_label = actor.text_3d(text='y axis (micron)',position=(-2666,0,-2666),font_size=50,justification='left')
+y_label = actor.text_3d(text='y axis (micron)',position=(3000,0,3000.0),font_size=200,justification='left')
 scene.add(y_label)
-z_label = actor.text_3d(text='z axis (micron)',position=(-3300,-500,-2600),font_size=50,justification='left')
+z_label = actor.text_3d(text='z axis (micron)',position=(3000,-700.0,0.0),font_size=200,justification='left')
 scene.add(z_label)
 
-#Render
+
+
+showm.initialize()
+
 showm.render()
 
-#Start
+
 showm.start()
