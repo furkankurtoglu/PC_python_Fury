@@ -15,14 +15,17 @@ import glob
 import time
 
 #reading data
-output = "output00000001.xml"
+output = "output00000000.xml"
 
 #function to create sphere actors, this function works for only CRC organoid project
 mcds=pyMCDS(output)
 data=mcds.get_cell_df()
 Types = np.array([mcds.data['discrete_cells']['cell_type']])
-Fibro = np.where(Types == 2)
-Organoid = np.where(Types == 1)
+Fibro = np.where(Types == 3)
+#Organoid = np.where(Types == 1)
+KRAS_positive = np.where(Types == 1)
+KRAS_negative = np.where(Types == 2)
+
 #Cells
 C_xpos = np.array([pd.DataFrame.to_numpy(data['position_x'][:])])
 C_ypos = np.array([pd.DataFrame.to_numpy(data['position_y'][:])])
@@ -39,14 +42,22 @@ C_R = np.array([np.ones(len(C_radii))]).transpose()
 C_G = np.array([np.ones(len(C_radii))]).transpose()
 C_B = np.array([np.ones(len(C_radii))]).transpose()
 C_O = np.array([np.ones(len(C_radii))]).transpose()*0.6
-# Type 1 (Organoid)
-C_R[Fibro[1]] = 0
-C_G[Fibro[1]] = 0.353
-C_B[Fibro[1]] = 1
-# Type 2 (Fibroblast)
-C_R[Organoid[1]] = 1
-C_G[Organoid[1]] = 1
-C_B[Organoid[1]] = 0
+# Type 1 KRAS Positive
+C_R[KRAS_positive] = 1
+C_G[KRAS_positive] = 0
+C_B[KRAS_positive] = 0
+# Type 2 KRAS Negative
+C_R[KRAS_negative] = 0
+C_G[KRAS_negative] = 0
+C_B[KRAS_negative] = 1
+# Type 3 (Fibroblast)
+C_R[Fibro] = 0
+C_G[Fibro]= 1
+C_B[Fibro] = 0
+# Type 2 (Organoid)
+#C_R[Organoid[1]] = 1
+#C_G[Organoid[1]] = 1
+#C_B[Organoid[1]] = 0
 C_colors = np.concatenate((C_R,C_G,C_B,C_O),axis=1)
 # Nucleus
 N_xyz=C_xyz
