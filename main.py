@@ -21,9 +21,9 @@ output = "output00000000.xml"
 mcds=pyMCDS(output)
 data=mcds.get_cell_df()
 Types = np.array([mcds.data['discrete_cells']['cell_type']])
-Fibro = np.where(Types == 3)
+Fibro = np.where(Types == 1)
 #Organoid = np.where(Types == 1)
-KRAS_positive = np.where(Types == 1)
+KRAS_positive = np.where(Types == 3)
 KRAS_negative = np.where(Types == 2)
 
 #Cells
@@ -43,17 +43,17 @@ C_G = np.array([np.ones(len(C_radii))]).transpose()
 C_B = np.array([np.ones(len(C_radii))]).transpose()
 C_O = np.array([np.ones(len(C_radii))]).transpose()*0.6
 # Type 1 KRAS Positive
-C_R[KRAS_positive] = 1
-C_G[KRAS_positive] = 0
-C_B[KRAS_positive] = 0
+#C_R[KRAS_positive] = 1
+#C_G[KRAS_positive] = 0
+#C_B[KRAS_positive] = 0
 # Type 2 KRAS Negative
 C_R[KRAS_negative] = 0
 C_G[KRAS_negative] = 0
 C_B[KRAS_negative] = 1
 # Type 3 (Fibroblast)
-C_R[Fibro] = 0
-C_G[Fibro]= 1
-C_B[Fibro] = 0
+#C_R[Fibro] = 0
+#C_G[Fibro]= 1
+#C_B[Fibro] = 0
 # Type 2 (Organoid)
 #C_R[Organoid[1]] = 1
 #C_G[Organoid[1]] = 1
