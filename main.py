@@ -8,15 +8,27 @@ Created on Mon Jan 27 18:00:01 2020
 from pyMCDS import pyMCDS
 import numpy as np
 import pandas as pd
-from fury import window, actor, ui
+from fury import window, actor, utils, primitive, io, ui
+from fury.data import read_viz_textures, fetch_viz_textures
 import itertools
 import vtk
 import glob
 import time
+import random
 
 #reading data
 output = "output00000000.xml"
 
+scene = window.Scene()
+
+
+showm = window.ShowManager(scene,
+                           size=(1600, 900), reset_camera=True,
+                           order_transparent=True)
+
+
+
+#%%
 #function to create sphere actors, this function works for only CRC organoid project
 mcds=pyMCDS(output)
 data=mcds.get_cell_df()
@@ -25,6 +37,8 @@ Fibro = np.where(Types == 1)
 #Organoid = np.where(Types == 1)
 KRAS_positive = np.where(Types == 3)
 KRAS_negative = np.where(Types == 2)
+
+#%%
 
 #Cells
 C_xpos = np.array([pd.DataFrame.to_numpy(data['position_x'][:])])
@@ -41,16 +55,31 @@ C_radii = np.power(C_volume,1/3).transpose()
 C_R = np.array([np.ones(len(C_radii))]).transpose()
 C_G = np.array([np.ones(len(C_radii))]).transpose()
 C_B = np.array([np.ones(len(C_radii))]).transpose()
-C_O = np.array([np.ones(len(C_radii))]).transpose()*0.6
+C_O = np.array([np.ones(len(C_radii))]).transpose()*1
+#%%
 # Type 1 KRAS Positive
+<<<<<<< HEAD
+C_R[KRAS_positive[1]] = 1
+C_G[KRAS_positive[1]] = 0
+C_B[KRAS_positive[1]] = 0
+
+#%%
+=======
 #C_R[KRAS_positive] = 1
 #C_G[KRAS_positive] = 0
 #C_B[KRAS_positive] = 0
+>>>>>>> 05e73bdef6f8e7b34eb30afdc106ac3812385823
 # Type 2 KRAS Negative
-C_R[KRAS_negative] = 0
-C_G[KRAS_negative] = 0
-C_B[KRAS_negative] = 1
+C_R[KRAS_negative[1]]= 0
+C_G[KRAS_negative[1]] = 1
+C_B[KRAS_negative[1]] = 1
 # Type 3 (Fibroblast)
+<<<<<<< HEAD
+C_R[Fibro[1]] = 0
+C_G[Fibro[1]]= 0
+C_B[Fibro[1]] = 1
+
+=======
 #C_R[Fibro] = 0
 #C_G[Fibro]= 1
 #C_B[Fibro] = 0
@@ -58,45 +87,123 @@ C_B[KRAS_negative] = 1
 #C_R[Organoid[1]] = 1
 #C_G[Organoid[1]] = 1
 #C_B[Organoid[1]] = 0
+>>>>>>> 05e73bdef6f8e7b34eb30afdc106ac3812385823
 C_colors = np.concatenate((C_R,C_G,C_B,C_O),axis=1)
-# Nucleus
-N_xyz=C_xyz
-# Nucleus Radii
-N_volume = np.array([pd.DataFrame.to_numpy(data['nuclear_volume'][:])])
-N_volume = N_volume/4/np.pi*3
-N_radii = np.power(N_volume,1/3).transpose()
-N_R = np.array([np.ones(len(N_radii))]).transpose()*0.35
-N_G = np.array([np.ones(len(N_radii))]).transpose()*0.2
-N_B = np.array([np.ones(len(N_radii))]).transpose()*0.1
-N_O = np.array([np.ones(len(N_radii))]).transpose()*0.9
-N_colors = np.concatenate((N_R,N_G,N_B,N_O),axis=1)
+
+
+# # Nucleus
+# N_xyz=C_xyz
+# # Nucleus Radii
+# N_volume = np.array([pd.DataFrame.to_numpy(data['nuclear_volume'][:])])
+# N_volume = N_volume/4/np.pi*3
+# N_radii = np.power(N_volume,1/3).transpose()
+# N_R = np.array([np.ones(len(N_radii))]).transpose()*0.35
+# N_G = np.array([np.ones(len(N_radii))]).transpose()*0.2
+# N_B = np.array([np.ones(len(N_radii))]).transpose()*0.1
+# N_O = np.array([np.ones(len(N_radii))]).transpose()*0.9
+# N_colors = np.concatenate((N_R,N_G,N_B,N_O),axis=1)
 # Concatenations
-xyz = np.concatenate((C_xyz,N_xyz),axis=0)
-colors = np.concatenate((C_colors,N_colors),axis=0)
-radii = np.concatenate((C_radii,N_radii),axis=0)
+xyz = C_xyz
+radii = C_radii
+colors = C_colors
+# xyz = np.concatenate((C_xyz,N_xyz),axis=0)
+# colors = np.concatenate((C_colors,N_colors),axis=0)
+# radii = np.concatenate((C_radii,N_radii),axis=0)
+
+
+
+
+
+###### Method 1 Start 
 # Creating Sphere Actor for one time-point
 sphere_actor = actor.sphere(centers=xyz,colors=colors,radii=radii)
+scene.add(sphere_actor)
+###### Method 1 End
 
 #%%
 
-#Creating Scene and showmanager
-scene = window.Scene()
-scene.set_camera(position=(5026.62, 2766.0, 9293.52), focal_point=(221.95, -75.04, -77.73),
-                 view_up=(-0.06, 0.963, -0.26))
+####### Method 2 Start
 
-showm = window.ShowManager(scene,
-                           size=(1280, 720), reset_camera=True,
-                           order_transparent=True)
+# # fetch_viz_textures()
+# filename = read_viz_textures("Yellow_Cell.png")
+# image = io.load_image(filename)
 
-#Adding Sphere actor to scene
-scene.add(sphere_actor)
+# counter = 0;
+# for pos in xyz:
+#     rand = random.uniform(0, 90)
+#     cell_actor = actor.texture_on_sphere(image)
+#     cell_actor.SetScale(radii[counter],radii[counter],radii[counter])
+#     cell_actor.SetPosition(pos[0],pos[1],pos[2])
+#     utils.rotate(cell_actor,(rand, 1, 0, 0))
+#     counter+=1
+#     scene.add(actor.texture_on_sphere(image))
+#     # print(counter)
 
-#xdomain_size=
+#%%
+
+
+x_ring_slider = ui.RingSlider2D(center=(30, 50), initial_value=0,
+                              text_template="{angle:5.1f}°",font_size=12,slider_inner_radius=20,slider_outer_radius=24,handle_outer_radius=5)
+
+
+y_ring_slider = ui.RingSlider2D(center=(30, 110), initial_value=0,
+                              text_template="{angle:5.1f}°°",font_size=12,slider_inner_radius=20,slider_outer_radius=24,handle_outer_radius=5)
+
+z_ring_slider = ui.RingSlider2D(center=(30, 170), initial_value=0,
+                              text_template="{angle:5.1f}°°",font_size=12,slider_inner_radius=20,slider_outer_radius=24,handle_outer_radius=5)
+
+scene.add(x_ring_slider)
+scene.add(y_ring_slider)
+scene.add(z_ring_slider)
+x_ring_slider.set_visibility(True)
+y_ring_slider.set_visibility(True)
+z_ring_slider.set_visibility(True)
+
+
+
+def change_slice_x(slider):
+    angle = slider.value
+    previous_angle = slider.previous_value
+    rotation_angle = angle - previous_angle
+    showm.scene.elevation(rotation_angle)
+    
+x_ring_slider.on_change = change_slice_x
+
+def change_slice_y(slider):
+    angle = slider.value
+    previous_angle = slider.previous_value
+    rotation_angle = angle - previous_angle
+    showm.scene.azimuth(rotation_angle)
+    
+y_ring_slider.on_change = change_slice_y
+
+
+
+def change_slice_z(slider):
+    angle = slider.value
+    previous_angle = slider.previous_value
+    rotation_angle = angle - previous_angle
+    showm.scene.roll(rotation_angle)
+    
+z_ring_slider.on_change = change_slice_z
+
+xlabel = ui.TextBlock2D(position=(70,40),text="x-axis")
+ylabel = ui.TextBlock2D(position=(70,100),text="y-axis")
+zlabel = ui.TextBlock2D(position=(70,160),text="z-axis")
+scene.add(xlabel)
+scene.add(ylabel)
+scene.add(zlabel)
+
+
+ax = actor.axes(scale=(100, 100, 100))
+# scene.add(ax)
+
+
 
 
 #Drawing Domain Boundaries
 lines = [np.array([[-2880.,-500.,-2880.],[2880.,-500.,-2880.],[2880.,500.,-2880.],[-2880.,500.,-2880.],[-2880.,-500.,-2880.],[-2880.,-500.,2880.],[-2880.,500.,2880.],[-2880.,500.,-2880.],[-2880.,500.,2880.],[2880.,500.,2880.],[2880.,500.,-2880.],[2880.,500.,-2880.],[2880.,-500.,-2880.],[2880.,-500.,2880.],[2880.,500.,2880.],[2880.,-500.,2880.],[-2880.,-500.,2880.]])]
-colors = np.random.rand(1,3)
+colors = np.array([0.5, 0.5, 0.5])
 c = actor.line(lines, colors)
 scene.add(c)
 
@@ -110,9 +217,14 @@ scene.add(z_label)
 
 
 
+
+#scene.add(actor.texture_on_sphere(image))
+
 showm.initialize()
+showm.scene.reset_camera()
 
-showm.render()
+scene.set_camera(position=(5026.62, 2766.0, 9293.52), focal_point=(221.95, -75.04, -77.73), view_up=(-0.06, 0.963, -0.26))
 
+#showm.render()
 
 showm.start()

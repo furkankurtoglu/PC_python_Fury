@@ -419,47 +419,52 @@ class pyMCDS:
         # but we dont need to get them in the loop
         X, Y, Z = np.unique(xx), np.unique(yy), np.unique(zz)
 
-        for si, species in enumerate(var_children):
-            species_name = species.get('name')
-            MCDS['continuum_variables'][species_name] = {}
-            MCDS['continuum_variables'][species_name]['units'] = species.get(
-                'units')
 
-            print('Parsing {:s} data'.format(species_name))
+        ########### Please, be aware! This part is commented out for CRC Project. Please, be aware!
+        # for si, species in enumerate(var_children):
+            # species_name = species.get('name')
+            # MCDS['continuum_variables'][species_name] = {}
+            # MCDS['continuum_variables'][species_name]['units'] = species.get(
+                # 'units')
 
-            # initialize array for concentration data
-            MCDS['continuum_variables'][species_name]['data'] = np.zeros(xx.shape)
+            # print('Parsing {:s} data'.format(species_name))
 
-            # travel down one level on tree
-            species = species.find('physical_parameter_set')
+            # # initialize array for concentration data
+            # MCDS['continuum_variables'][species_name]['data'] = np.zeros(xx.shape)
 
-            # diffusion data for each species
-            MCDS['continuum_variables'][species_name]['diffusion_coefficient'] = {}
-            MCDS['continuum_variables'][species_name]['diffusion_coefficient']['value'] \
-                = float(species.find('diffusion_coefficient').text)
-            MCDS['continuum_variables'][species_name]['diffusion_coefficient']['units'] \
-                = species.find('diffusion_coefficient').get('units')
+            # # travel down one level on tree
+            # species = species.find('physical_parameter_set')
 
-            # decay data for each species
-            MCDS['continuum_variables'][species_name]['decay_rate'] = {}
-            MCDS['continuum_variables'][species_name]['decay_rate']['value'] \
-                = float(species.find('decay_rate').text)
-            MCDS['continuum_variables'][species_name]['decay_rate']['units'] \
-                = species.find('decay_rate').get('units')
+            # # diffusion data for each species
+            # MCDS['continuum_variables'][species_name]['diffusion_coefficient'] = {}
+            # MCDS['continuum_variables'][species_name]['diffusion_coefficient']['value'] \
+                # = float(species.find('diffusion_coefficient').text)
+            # MCDS['continuum_variables'][species_name]['diffusion_coefficient']['units'] \
+                # = species.find('diffusion_coefficient').get('units')
 
-            # store data from microenvironment file as numpy array            
-            # iterate over each voxel
-            for vox_idx in range(MCDS['mesh']['voxels']['centers'].shape[1]):
-                # find the center
-                center = MCDS['mesh']['voxels']['centers'][:, vox_idx]
+            # # decay data for each species
+            # MCDS['continuum_variables'][species_name]['decay_rate'] = {}
+            # MCDS['continuum_variables'][species_name]['decay_rate']['value'] \
+                # = float(species.find('decay_rate').text)
+            # MCDS['continuum_variables'][species_name]['decay_rate']['units'] \
+                # = species.find('decay_rate').get('units')
 
-                i = np.where(np.abs(center[0] - X) < 1e-10)[0][0]
-                j = np.where(np.abs(center[1] - Y) < 1e-10)[0][0]
-                k = np.where(np.abs(center[2] - Z) < 1e-10)[0][0]
+            # # store data from microenvironment file as numpy array            
+            # # iterate over each voxel
+            # for vox_idx in range(MCDS['mesh']['voxels']['centers'].shape[1]):
+                # # find the center
+                # center = MCDS['mesh']['voxels']['centers'][:, vox_idx]
 
-                MCDS['continuum_variables'][species_name]['data'][j, i, k] \
-                    = me_data[4+si, vox_idx]
+                # i = np.where(np.abs(center[0] - X) < 1e-10)[0][0]
+                # j = np.where(np.abs(center[1] - Y) < 1e-10)[0][0]
+                # k = np.where(np.abs(center[2] - Z) < 1e-10)[0][0]
 
+                # MCDS['continuum_variables'][species_name]['data'][j, i, k] \
+                    # = me_data[4+si, vox_idx]
+
+        ################################### 
+
+        
         # in order to get to the good stuff we have to pass through a few different
         # hierarchal levels
         cell_node = root.find('cellular_information')
