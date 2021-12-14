@@ -58,36 +58,20 @@ C_B = np.array([np.ones(len(C_radii))]).transpose()
 C_O = np.array([np.ones(len(C_radii))]).transpose()*1
 #%%
 # Type 1 KRAS Positive
-<<<<<<< HEAD
 C_R[KRAS_positive[1]] = 1
 C_G[KRAS_positive[1]] = 0
 C_B[KRAS_positive[1]] = 0
 
-#%%
-=======
-#C_R[KRAS_positive] = 1
-#C_G[KRAS_positive] = 0
-#C_B[KRAS_positive] = 0
->>>>>>> 05e73bdef6f8e7b34eb30afdc106ac3812385823
 # Type 2 KRAS Negative
 C_R[KRAS_negative[1]]= 0
 C_G[KRAS_negative[1]] = 1
 C_B[KRAS_negative[1]] = 1
 # Type 3 (Fibroblast)
-<<<<<<< HEAD
 C_R[Fibro[1]] = 0
 C_G[Fibro[1]]= 0
 C_B[Fibro[1]] = 1
 
-=======
-#C_R[Fibro] = 0
-#C_G[Fibro]= 1
-#C_B[Fibro] = 0
-# Type 2 (Organoid)
-#C_R[Organoid[1]] = 1
-#C_G[Organoid[1]] = 1
-#C_B[Organoid[1]] = 0
->>>>>>> 05e73bdef6f8e7b34eb30afdc106ac3812385823
+
 C_colors = np.concatenate((C_R,C_G,C_B,C_O),axis=1)
 
 
