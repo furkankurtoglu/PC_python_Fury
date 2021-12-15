@@ -32,6 +32,8 @@ showm = window.ShowManager(scene,
 #function to create sphere actors, this function works for only CRC organoid project
 mcds=pyMCDS(output)
 data=mcds.get_cell_df()
+
+
 Types = np.array([mcds.data['discrete_cells']['cell_type']])
 Fibro = np.where(Types == 1)
 #Organoid = np.where(Types == 1)
@@ -182,8 +184,16 @@ scene.add(zlabel)
 ax = actor.axes(scale=(100, 100, 100))
 # scene.add(ax)
 
-
-
+# mesh_structure = mcds.get_mesh()
+# X_domain = np.unique(mesh_structure[0][0])
+# Y_domain = np.unique(mesh_structure[1][0])
+# Z_domain = np.unique(mesh_structure[2][0])
+# dx = X_domain[1]-X_domain[0]
+# dy = Y_domain[1]-Y_domain[0]
+# dz = Z_domain[1]-Z_domain[0]
+# xlims = np.array([X_domain[0]-dx/2, X_domain[-1]+dx/2])
+# ylims = np.array([Y_domain[0]-dy/2, Y_domain[-1]+dy/2])
+# zlims = np.array([Z_domain[0]-dz/2, Z_domain[-1]+dz/2])
 
 #Drawing Domain Boundaries
 lines = [np.array([[-2880.,-500.,-2880.],[2880.,-500.,-2880.],[2880.,500.,-2880.],[-2880.,500.,-2880.],[-2880.,-500.,-2880.],[-2880.,-500.,2880.],[-2880.,500.,2880.],[-2880.,500.,-2880.],[-2880.,500.,2880.],[2880.,500.,2880.],[2880.,500.,-2880.],[2880.,500.,-2880.],[2880.,-500.,-2880.],[2880.,-500.,2880.],[2880.,500.,2880.],[2880.,-500.,2880.],[-2880.,-500.,2880.]])]
