@@ -15,9 +15,11 @@ import vtk
 import glob
 import time
 import random
-
+import os
 #reading data
-output = "output00000000.xml"
+
+os.chdir(r"C:\Users\fkurt\Documents\GitHub\CRC-Organoids-Multiscale-Model\PhysiCell_Model\output")
+output = "output00000024.xml"
 
 scene = window.Scene()
 
@@ -34,11 +36,13 @@ mcds=pyMCDS(output)
 data=mcds.get_cell_df()
 
 
+
+
 Types = np.array([mcds.data['discrete_cells']['cell_type']])
 Fibro = np.where(Types == 1)
 #Organoid = np.where(Types == 1)
 KRAS_positive = np.where(Types == 3)
-KRAS_negative = np.where(Types == 2)
+KRAS_negative = np.where(Types == 0)
 
 #%%
 
@@ -65,9 +69,9 @@ C_G[KRAS_positive[1]] = 0
 C_B[KRAS_positive[1]] = 0
 
 # Type 2 KRAS Negative
-C_R[KRAS_negative[1]]= 0
-C_G[KRAS_negative[1]] = 1
-C_B[KRAS_negative[1]] = 1
+C_R[KRAS_negative[1]]= 1
+C_G[KRAS_negative[1]] = 0
+C_B[KRAS_negative[1]] = 0
 # Type 3 (Fibroblast)
 C_R[Fibro[1]] = 0
 C_G[Fibro[1]]= 0
@@ -202,11 +206,11 @@ c = actor.line(lines, colors)
 scene.add(c)
 
 #Adding Dimension Labels
-x_label = actor.text_3d(text='x axis (micron)',position=(-750.0,-700.0,3000.0),font_size=200,justification='left')
+x_label = actor.text_3d(text='x axis (micron)',position=(-750.0,-700.0,3000.0),font_size=200,justification='left',color=(0,0,0))
 scene.add(x_label)
-y_label = actor.text_3d(text='y axis (micron)',position=(3000,0,3000.0),font_size=200,justification='left')
+y_label = actor.text_3d(text='y axis (micron)',position=(3000,0,3000.0),font_size=200,justification='left',color=(0,0,0))
 scene.add(y_label)
-z_label = actor.text_3d(text='z axis (micron)',position=(3000,-700.0,0.0),font_size=200,justification='left')
+z_label = actor.text_3d(text='z axis (micron)',position=(3000,-700.0,0.0),font_size=200,justification='left',color=(0,0,0))
 scene.add(z_label)
 
 
@@ -216,9 +220,9 @@ scene.add(z_label)
 
 showm.initialize()
 showm.scene.reset_camera()
-
+scene.background((1, 1, 1))
 scene.set_camera(position=(5026.62, 2766.0, 9293.52), focal_point=(221.95, -75.04, -77.73), view_up=(-0.06, 0.963, -0.26))
 
 #showm.render()
 
-showm.start()
+#showm.start()
